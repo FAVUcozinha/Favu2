@@ -33,10 +33,11 @@ header {
 }
 
 .main-image {
-    width: 200px; /* Tamanho restaurado para 200px */
+    width: auto; /* Garante que a largura seja proporcional ao tamanho da imagem */
+    max-width: 100%; /* Limita a largura da imagem ao tamanho máximo da tela */
     height: auto;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto; /* Centraliza a imagem */
 }
 
 /* Seção dos Botões */
@@ -53,7 +54,7 @@ header {
     display: flex;
     flex-direction: column; /* Empilha os botões */
     align-items: center; /* Garante que os botões fiquem centralizados */
-    gap: 20px; /* Espaço entre os botões */
+    gap: 10px; /* Reduzido o espaço entre os botões para metade */
 }
 
 .button {
