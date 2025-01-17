@@ -33,8 +33,8 @@ header {
 }
 
 .main-image {
-    width: 600px; /* Tamanho fixo da imagem alterado para 600px */
-    height: auto; /* A altura será proporcional à largura */
+    width: 200px; /* Tamanho restaurado para 200px */
+    height: auto;
     display: block;
     margin: 0 auto;
 }
@@ -42,7 +42,7 @@ header {
 /* Seção dos Botões */
 .buttons-section {
     background-color: #F4E6CB; /* Cor de fundo da seção de botões */
-    padding: 30px 0;
+    padding: 15px 0; /* Diminuído o padding vertical para reduzir o espaço de fundo */
     text-align: center;
     display: flex;
     justify-content: center;
