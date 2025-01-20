@@ -39,7 +39,7 @@ header {
 }
 
 .main-image {
-    width: 100%;
+    width: 50%;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -60,9 +60,8 @@ header {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: calc(100% - 1cm); /* Reduzindo a largura em 0,5 cm de cada lado */
-    max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%; /* Garantir que a largura do contêiner dos botões seja 100% */
 }
 
 /* Botões */
@@ -71,16 +70,130 @@ header {
     color: #F4E6CB;
     padding: 15px 0;
     font-size: 20px;
-    font-family: 'Basic Choice', Arial, sans-serif;
+    font-family: 'Basic Choice', Arial, sans-serif; /* Fonte alterada aqui */
     text-decoration: none;
     border-radius: 25px;
     text-align: center;
     transition: background-color 0.3s;
-    width: 100%;
-    max-width: 100%;
+    width: 100%; /* Garantir que os botões ocupem toda a largura disponível */
+    max-width: 100%; /* Largura máxima 100% */
+    margin: 0 20px;
     white-space: nowrap;
     box-sizing: border-box;
     display: inline-block;
+}
+
+/* Versão Mobile */
+@media (max-width: 768px) {
+    .buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button {
+        font-size: 20px;
+        padding: 20px 0;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        box-sizing: border-box;
+        border-radius: 25px;
+    }
+
+    .slideshow-section {
+        height: 30vh;
+    }
+}
+
+/* Versão Web */
+@media (min-width: 769px) {
+    .buttons-container {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+        width: 100%; /* Garantir que o contêiner ocupe toda a largura */
+        max-width: 100%; /* Garantir que a largura do contêiner dos botões seja 100% */
+        margin: 0 auto;
+    }
+
+    .button {
+        font-size: 30px;
+        padding: 15px 20px;
+        width: 100%;
+        max-width: 100%; /* Largura total do botão */
+        margin: 0;
+        white-space: nowrap;
+        height: auto;
+        box-sizing: border-box;
+        border-radius: 25px;
+    }
+
+    /* Ajuste para que os botões ocupem a largura correspondente ao arquivo "topo.png" */
+    .buttons-section {
+        width: 100%; /* Faz com que a largura da seção dos botões corresponda à largura total */
+        max-width: 100%; /* Limita a largura da seção dos botões */
+        margin: 0 auto;
+    }
+
+    .button {
+        width: 100%;
+        max-width: 100%; /* Não ultrapassar a largura da imagem de topo */
+    }
+}
+
+/* Slideshow */
+.slideshow-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    height: 50vh;
+}
+
+.slideshow {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    animation: slideAnimation 112s infinite;
+}
+
+.slide {
+    width: 100%;
+    flex-shrink: 0;
+    opacity: 0;
+    animation: fadeInOut 112s infinite;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+}
+
+/* Animação para transição dos slides */
+@keyframes slideAnimation {
+    0% { transform: translateX(0); }
+    6.67% { transform: translateX(-100%); }
+    13.33% { transform: translateX(-200%); }
+    20% { transform: translateX(-300%); }
+    26.67% { transform: translateX(-400%); }
+    33.33% { transform: translateX(-500%); }
+    40% { transform: translateX(-600%); }
+    46.67% { transform: translateX(-700%); }
+    53.33% { transform: translateX(-800%); }
+    60% { transform: translateX(-900%); }
+    66.67% { transform: translateX(-1000%); }
+    73.33% { transform: translateX(-1100%); }
+    80% { transform: translateX(-1200%); }
+    86.67% { transform: translateX(-1300%); }
+    93.33% { transform: translateX(-1400%); }
+    100% { transform: translateX(-1500%); }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    4.17%, 95.83% { opacity: 1; }
 }
 
 /* Rodapé */
@@ -98,86 +211,4 @@ footer {
     object-fit: cover;
     margin: 0;
     padding: 0;
-}
-
-/* Slideshow */
-.slideshow-section {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-    height: 50vh;
-}
-
-.slideshow {
-    display: flex;
-    width: calc(100% * 15); /* Ajusta a largura para 15 slides */
-    animation: slideAnimation 30s linear infinite; /* Loop infinito e suave */
-}
-
-.slide {
-    width: 100%;
-    flex-shrink: 0;
-}
-
-.slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    margin: 0;
-}
-
-/* Animação do slideshow */
-@keyframes slideAnimation {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-/* Versão Mobile */
-@media (max-width: 768px) {
-    .header-image,
-    .main-image {
-        width: 100%;
-    }
-
-    .buttons-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .button {
-        font-size: 20px;
-        padding: 20px 0;
-        width: calc(100% - 1cm);
-        max-width: 100%;
-        box-sizing: border-box;
-        border-radius: 25px;
-    }
-
-    .slideshow-section {
-        height: 30vh;
-    }
-}
-
-/* Versão Web */
-@media (min-width: 769px) {
-    .buttons-container {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 20px;
-        width: calc(100% - 1cm);
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    .button {
-        font-size: 30px;
-        padding: 15px 20px;
-        width: 100%;
-        max-width: 100%;
-        white-space: nowrap;
-        height: auto;
-        box-sizing: border-box;
-        border-radius: 25px;
-    }
 }
