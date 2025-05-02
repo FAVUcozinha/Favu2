@@ -1,546 +1,839 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAVU - Cozinha Afetiva</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Resumo do Pedido</title>
+    <style>
+        caption {
+            display: block;
+            color: #E09F41; /* Muda a cor do título do grupo */
+            font-weight: bold;
+            font-size: 18px;
+        }
+    
+        /* Especificando a cor dos itens e quantidades para os grupos específicos */
+        table#tabela-bolo-tradicional th:nth-child(1),
+        table#tabela-bolo-tradicional th:nth-child(4),
+        table#tabela-bolo-especial th:nth-child(1),
+        table#tabela-bolo-especial th:nth-child(4),
+        table#tabela-prato-salgado th:nth-child(1),
+        table#tabela-prato-salgado th:nth-child(4) {
+            color: #E09F41;
+        }
+    
+        table#tabela-bolo-tradicional td:nth-child(1),
+        table#tabela-bolo-tradicional td:nth-child(4),
+        table#tabela-bolo-especial td:nth-child(1),
+        table#tabela-bolo-especial td:nth-child(4),
+        table#tabela-prato-salgado td:nth-child(1),
+        table#tabela-prato-salgado td:nth-child(4) {
+            color: #E09F41;
+        }
+    
+        table caption {
+            display: block;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    
+        @font-face {
+            font-family: 'Basic Choice 2';
+            src: url('fonts/Basic Choice 2.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    
+        body {
+            background-color: #E09F41;
+            text-align: center;
+            color: white;
+            font-family: 'Basic Choice 2', Arial, sans-serif;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+    
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+        }
+    
+        header img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+        }
+    
+        header img + img {
+            margin-top: 5px;
+        }
+    
+        #grupo-imagem {
+            width: 50%;
+            margin: 0 auto;
+            display: block;
+            margin-top: 5px;
+        }
+    
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+    
+        th, td {
+            padding: 10px;
+        }
+    
+        th:nth-child(1), th:nth-child(4) {
+            color: #E09F41;
+        }
+    
+        th:nth-child(2), th:nth-child(3) {
+            color: white;
+        }
+    
+        select, input {
+            text-align: center;
+        }
+    
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 20px;
+            background-color: #7FB1C8;
+            border: none;
+            color: #F4E6CB;
+            cursor: pointer;
+            font-family: 'Basic Choice 2', Arial, sans-serif;
+            width: 100%;
+            font-size: 18px;
+        }
+    
+        #resumo {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+            background-color: #F4E6CB;
+            color: #1A2B0F;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        tr {
+            border-bottom: 1px solid #F4E6CB;
+        }
+    
+        input[type="number"] {
+            width: 60px;
+            height: 40px;
+            border: 2px solid #F4E6CB;
+            background-color: #F4E6CB;
+            color: #000;
+            font-family: 'Basic Choice 2', Arial, sans-serif;
+            font-size: 16px;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 10px;
+        }
+    
+        .erro {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    
+        footer {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    
+        footer img {
+            width: 100%;
+            height: auto;
+        }
+    
+        @media (min-width: 768px) {
+            header img {
+                content: url('topodesktop.png');
+                width: 100%;
+            }
+    
+            footer img {
+                content: url('rodadesktop.png');
+                width: 100%;
+            }
+    
+            header img:nth-of-type(2) {
+                content: url('MENU.png');
+                width: 100%;
+            }
+        }
+    
+        @media (max-width: 767px) {
+            header img:nth-of-type(2) {
+                width: 80%;
+                margin: 0 auto;
+                border: none;
+                padding: 10px;
+                border-radius: 10px;
+            }
+    
+            header img, footer img {
+                width: 100%;
+            }
+        }
+    
+        #botao-pedido {
+            margin-bottom: 50px;
+        }
+    
+        #resumo h2 {
+            font-size: 26px;
+            font-weight: bold;
+        }
+    
+        .resumo-itens {
+            text-align: left;
+            padding-left: 20px;
+        }
+    
+        footer {
+            margin-top: 30px;
+        }
+    
+        #resumo-total {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    
+        #botao-voltar {
+            background-color: #7FB1C8;
+            color: #F4E6CB;
+            font-size: 18px;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-family: 'Basic Choice 2', Arial, sans-serif;
+        }
+    
+        .item-nome {
+            font-weight: bold;
+            color: inherit;  /* Herda a cor do elemento pai */
+        }
+    
+        .descricao {
+            font-size: 12px; /* Ajuste o tamanho conforme necessário */
+            margin-top: 4px; /* Espaçamento entre o nome e a descrição */
+            color: inherit;  /* Herda a cor do nome */
+        }
+    
+        /* Estilos do Popup */
+        .popup {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .popup-conteudo {
+            background-color: #F4E6CB;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+    
+        .popup h2 {
+            color: #000; /* Título do Popup em branco */
+        }
+    
+        .popup input, 
+        .popup select {
+            width: 100%; /* Garante que os campos de entrada tenham a largura dos botões */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 20px; /* Mantém o formato arredondado */
+            font-family: 'Basic Choice 2', Arial, sans-serif;
+            box-sizing: border-box;
+        }
+    
+        .popup button {
+            padding: 10px;
+            background-color: #7FB1C8;
+            color: #FFF;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+    
+        .popup button:hover {
+            background-color: #6f97b2;
+        }
+    
+        .fechar {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    
+        .fechar:hover,
+        .fechar:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+            
+        /* Estilo para os títulos de Nome, Data e Hora no Popup */
+        .popup label {
+            color: #000; /* Cor preta para os títulos */
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Ajustes para dispositivos móveis */
+        @media (max-width: 767px) {
+            /* Garantir que os campos de data e horário tenham a mesma largura exata do campo "forma de pagamento" */
+            .popup input[type="date"],
+            .popup input[type="time"],
+            .popup select {
+                width: 100%; /* Largura do campo de 100% do espaço disponível */
+                padding: 12px; /* Ajuste do padding para alinhar */
+                margin: 10px 0; /* Margem entre os campos */
+                border: 1px solid #ccc;
+                border-radius: 20px;
+                font-family: 'Basic Choice 2', Arial, sans-serif;
+                font-size: 16px;
+                background-color: #fff;
+                color: #000;
+                box-sizing: border-box;
+                height: 50px; /* Altura dos campos */
+            }
+
+            /* Garantir que o campo "forma de pagamento" tenha a mesma largura dos outros campos */
+            .popup select {
+                width: 100%; /* Largura igual para todos os campos */
+                text-align: center; /* Centralizar o texto dentro do campo */
+            }
+
+            /* Ajustar a largura do popup para a versão mobile */
+            .popup-conteudo {
+                width: 90%; /* Largura do popup */
+                max-width: 350px; /* Limite máximo para a largura */
+            }
+
+            /* Estilo do botão */
+            .popup button {
+                padding: 12px;
+                background-color: #7FB1C8;
+                color: #FFF;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+                width: 100%;
+                font-size: 18px;
+            }
+        }
+  
+    </style>
+    
 </head>
 <body>
-    <!-- Arquivo de fundo verde para a versão desktop -->
-    <div class="green-background"></div>
+    <div class="container">
+        <header>
+            <img src="topo.png" alt="Topo">
+            <img src="MENU.png" alt="Menu">
+        </header>
 
-    <!-- Cabeçalho -->
-    <header>
-        <img src="images/topo.png" alt="Imagem Cabeçalho" class="header-image">
-    </header>
+        <!-- Grupo Salgado Frito -->
+        <img src="salfri.png" alt="Salgados Fritos" id="grupo-imagem">
+        <table>
+            <caption>Salgados Fritos</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>QNT. MÍN.</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-salfri"></tbody>
+        </table>
 
-    <!-- Conteúdo Principal -->
-    <main>
-        <!-- Imagem Central -->
-        <section class="main-content">
-            <img src="images/favu.png" alt="Imagem FAVU" class="main-image">
-        </section>
+        <!-- Grupo Salgados Forno -->
+        <img src="SALFOR.png" alt="Salgados Forno" id="grupo-imagem">
+        <table>
+            <caption>Salgados Forno</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>QNT. MÍN.</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-salgado-forno"></tbody>
+        </table>
 
-        <!-- Seção dos Botões -->
-        <section class="buttons-section">
-            <div class="buttons-container">
-                <a href="https://favucozinha.github.io/Quemsomos/" class="button">Conheça a FAVU</a>
-                <a href="https://favucozinha.github.io/Cardapio/" class="button">Cardápio</a>
-                <a href="https://www.instagram.com/favucozinha/" class="button">Vem seguir a gente!</a>
+        <!-- Grupo Salgados Vegetarianos -->
+        <img src="SALVEG.png" alt="Salgados Vegetarianos" id="grupo-imagem">
+        <table>
+            <caption>Salgados Vegetarianos</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>QNT. MÍN.</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-salgado-vegetariano"></tbody>
+        </table>
+
+        <!-- Grupo Bolos Tradicionais -->
+        <img src="BOLTRA.png" alt="Bolos Tradicionais" id="grupo-imagem">
+        <table>
+            <caption>Bolos Tradicionais</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>tamanho</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-bolo-tradicional"></tbody>
+        </table>
+
+        <!-- Grupo Bolos Especiais -->
+        <img src="BOLESP.png" alt="Bolos Especiais" id="grupo-imagem">
+        <table>
+            <caption>Bolos Especiais</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>tamanho</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-bolo-especial"></tbody>
+        </table>
+
+        <!-- Grupo Pratos Salgados -->
+        <img src="PRASAL.png" alt="Pratos Salgados" id="grupo-imagem">
+        <table>
+            <caption>Pratos Salgados</caption>
+            <tr>
+                <th>ITEM</th>
+                <th>tamanho</th>
+                <th>UNID.</th>
+                <th>QUANTIDADE</th>
+            </tr>
+            <tbody id="tabela-prato-salgado"></tbody>
+        </table>
+
+        <div id="resumo">
+            <h2>Resumo do Pedido</h2>
+            <div id="resumo-itens" class="resumo-itens"></div>
+            <div id="resumo-total"></div>
+            <button onclick="abrirPopup()">Fazer Pedido</button>
+        </div>
+        
+        <button id="botao-voltar" onclick="window.location.replace('https://favucozinha.github.io/Inicio/')">Voltar</button>
+        
+        <!-- Popup para inserção de dados do pedido -->
+        <div id="popup-pedido" class="popup">
+            <div class="popup-conteudo">
+                <span class="fechar" onclick="fecharPopup()">&times;</span>
+                <h2>Informações do Pedido</h2>
+                <form id="form-pedido">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+
+                    <label for="data">Data da Entrega:</label>
+                    <input type="date" id="data" name="data" required>
+
+                    <label for="horario">Horário da Entrega:</label>
+                    <input type="time" id="horario" name="horario" required>
+        
+                    <label for="pagamento">Forma de Pagamento:</label>
+                    <select id="pagamento" name="pagamento" required>
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Cartão">Cartão</option>
+                        <option value="Pix">Pix</option>
+                    </select>
+
+                    <button type="button" onclick="confirmarPedido()">Confirmar Pedido</button>
+                    <button onclick="fecharPopup()">Cancelar</button>                </form>
             </div>
-        </section>
+        </div>
 
-        <!-- Slideshow -->
-        <section class="slideshow-section">
-            <div class="slideshow">
-                <img src="images/S01.jpg" alt="Imagem 1">
-                <img src="images/S02.jpg" alt="Imagem 2">
-                <img src="images/S03.jpg" alt="Imagem 3">
-                <img src="images/S04.jpg" alt="Imagem 4">
-                <img src="images/S05.jpg" alt="Imagem 5">
-                <img src="images/S06.jpg" alt="Imagem 6">
-                <img src="images/S07.jpg" alt="Imagem 7">
-                <img src="images/S08.jpg" alt="Imagem 8">
-                <img src="images/S09.jpg" alt="Imagem 9">
-                <img src="images/S10.jpg" alt="Imagem 10">
-                <img src="images/S11.jpg" alt="Imagem 11">
-                <img src="images/S12.jpg" alt="Imagem 12">
-                <img src="images/S13.jpg" alt="Imagem 13">
-                <img src="images/S14.jpg" alt="Imagem 14">
-                <img src="images/S15.jpg" alt="Imagem 15">
-                <img src="images/S16.jpg" alt="Imagem 16">
-                <img src="images/S17.jpg" alt="Imagem 17">
-                <img src="images/S18.jpg" alt="Imagem 18">
-                <img src="images/S19.jpg" alt="Imagem 19">
-                <img src="images/S20.jpg" alt="Imagem 20">
-                <img src="images/S21.jpg" alt="Imagem 21">
-                <img src="images/S22.jpg" alt="Imagem 22">
-                <img src="images/S01.jpg" alt="Imagem 23">
-                <img src="images/S02.jpg" alt="Imagem 24">
-                <img src="images/S03.jpg" alt="Imagem 25">
-                <img src="images/S04.jpg" alt="Imagem 26">
-                <img src="images/S05.jpg" alt="Imagem 27">
-                <img src="images/S06.jpg" alt="Imagem 28">
-                <img src="images/S07.jpg" alt="Imagem 29">
-                <img src="images/S08.jpg" alt="Imagem 30">
-                <img src="images/S09.jpg" alt="Imagem 31">
-                <img src="images/S10.jpg" alt="Imagem 32">
-                <img src="images/S11.jpg" alt="Imagem 33">
-                <img src="images/S12.jpg" alt="Imagem 34">
-                <img src="images/S13.jpg" alt="Imagem 35">
-                <img src="images/S14.jpg" alt="Imagem 36">
-                <img src="images/S15.jpg" alt="Imagem 37">
-                <img src="images/S16.jpg" alt="Imagem 38">
-                <img src="images/S17.jpg" alt="Imagem 39">
-                <img src="images/S18.jpg" alt="Imagem 40">
-                <img src="images/S19.jpg" alt="Imagem 41">
-                <img src="images/S20.jpg" alt="Imagem 42">
-                <img src="images/S21.jpg" alt="Imagem 43">
-                <img src="images/S22.jpg" alt="Imagem 44">
-                <img src="images/S01.jpg" alt="Imagem 45">
-                <img src="images/S02.jpg" alt="Imagem 46">
-                <img src="images/S03.jpg" alt="Imagem 47">
-                <img src="images/S04.jpg" alt="Imagem 48">
-                <img src="images/S05.jpg" alt="Imagem 49">
-                <img src="images/S06.jpg" alt="Imagem 50">
-                <img src="images/S07.jpg" alt="Imagem 51">
-                <img src="images/S08.jpg" alt="Imagem 52">
-                <img src="images/S09.jpg" alt="Imagem 53">
-                <img src="images/S10.jpg" alt="Imagem 54">
-                <img src="images/S11.jpg" alt="Imagem 55">
-                <img src="images/S12.jpg" alt="Imagem 56">
-                <img src="images/S13.jpg" alt="Imagem 57">
-                <img src="images/S14.jpg" alt="Imagem 58">
-                <img src="images/S15.jpg" alt="Imagem 59">
-                <img src="images/S16.jpg" alt="Imagem 60">
-                <img src="images/S17.jpg" alt="Imagem 61">
-                <img src="images/S18.jpg" alt="Imagem 62">
-                <img src="images/S19.jpg" alt="Imagem 63">
-                <img src="images/S20.jpg" alt="Imagem 64">
-                <img src="images/S21.jpg" alt="Imagem 65">
-                <img src="images/S22.jpg" alt="Imagem 66">
-                <img src="images/S01.jpg" alt="Imagem 67">
-                <img src="images/S02.jpg" alt="Imagem 68">
-                <img src="images/S03.jpg" alt="Imagem 69">
-                <img src="images/S04.jpg" alt="Imagem 70">
-                <img src="images/S05.jpg" alt="Imagem 71">
-                <img src="images/S06.jpg" alt="Imagem 72">
-                <img src="images/S07.jpg" alt="Imagem 73">
-                <img src="images/S08.jpg" alt="Imagem 74">
-                <img src="images/S09.jpg" alt="Imagem 75">
-                <img src="images/S10.jpg" alt="Imagem 76">
-                <img src="images/S11.jpg" alt="Imagem 77">
-                <img src="images/S12.jpg" alt="Imagem 78">
-                <img src="images/S13.jpg" alt="Imagem 79">
-                <img src="images/S14.jpg" alt="Imagem 80">
-                <img src="images/S15.jpg" alt="Imagem 81">
-                <img src="images/S16.jpg" alt="Imagem 82">
-                <img src="images/S17.jpg" alt="Imagem 83">
-                <img src="images/S18.jpg" alt="Imagem 84">
-                <img src="images/S19.jpg" alt="Imagem 85">
-                <img src="images/S20.jpg" alt="Imagem 86">
-                <img src="images/S21.jpg" alt="Imagem 87">
-                <img src="images/S22.jpg" alt="Imagem 88">
-                <img src="images/S01.jpg" alt="Imagem 89">
-                <img src="images/S02.jpg" alt="Imagem 90">
-                <img src="images/S03.jpg" alt="Imagem 91">
-                <img src="images/S04.jpg" alt="Imagem 92">
-                <img src="images/S05.jpg" alt="Imagem 93">
-                <img src="images/S06.jpg" alt="Imagem 94">
-                <img src="images/S07.jpg" alt="Imagem 95">
-                <img src="images/S08.jpg" alt="Imagem 96">
-                <img src="images/S09.jpg" alt="Imagem 97">
-                <img src="images/S10.jpg" alt="Imagem 98">
-                <img src="images/S11.jpg" alt="Imagem 99">
-                <img src="images/S12.jpg" alt="Imagem 100">
-                <img src="images/S101.jpg" alt="Imagem 101">
-                <img src="images/S102.jpg" alt="Imagem 102">
-                <img src="images/S103.jpg" alt="Imagem 103">
-                <img src="images/S104.jpg" alt="Imagem 104">
-                <img src="images/S105.jpg" alt="Imagem 105">
-                <img src="images/S106.jpg" alt="Imagem 106">
-                <img src="images/S107.jpg" alt="Imagem 107">
-                <img src="images/S108.jpg" alt="Imagem 108">
-                <img src="images/S109.jpg" alt="Imagem 109">
-                <img src="images/S110.jpg" alt="Imagem 110">
-                <img src="images/S111.jpg" alt="Imagem 111">
-                <img src="images/S112.jpg" alt="Imagem 112">
-                <img src="images/S113.jpg" alt="Imagem 113">
-                <img src="images/S114.jpg" alt="Imagem 114">
-                <img src="images/S115.jpg" alt="Imagem 115">
-                <img src="images/S116.jpg" alt="Imagem 116">
-                <img src="images/S117.jpg" alt="Imagem 117">
-                <img src="images/S118.jpg" alt="Imagem 118">
-                <img src="images/S119.jpg" alt="Imagem 119">
-                <img src="images/S120.jpg" alt="Imagem 120">
-                <img src="images/S121.jpg" alt="Imagem 121">
-                <img src="images/S122.jpg" alt="Imagem 122">
-                <img src="images/S123.jpg" alt="Imagem 123">
-                <img src="images/S124.jpg" alt="Imagem 124">
-                <img src="images/S125.jpg" alt="Imagem 125">
-                <img src="images/S126.jpg" alt="Imagem 126">
-                <img src="images/S127.jpg" alt="Imagem 127">
-                <img src="images/S128.jpg" alt="Imagem 128">
-                <img src="images/S129.jpg" alt="Imagem 129">
-                <img src="images/S130.jpg" alt="Imagem 130">
-                <img src="images/S131.jpg" alt="Imagem 131">
-                <img src="images/S132.jpg" alt="Imagem 132">
-                <img src="images/S133.jpg" alt="Imagem 133">
-                <img src="images/S134.jpg" alt="Imagem 134">
-                <img src="images/S135.jpg" alt="Imagem 135">
-                <img src="images/S136.jpg" alt="Imagem 136">
-                <img src="images/S137.jpg" alt="Imagem 137">
-                <img src="images/S138.jpg" alt="Imagem 138">
-                <img src="images/S139.jpg" alt="Imagem 139">
-                <img src="images/S140.jpg" alt="Imagem 140">
-                <img src="images/S141.jpg" alt="Imagem 141">
-                <img src="images/S142.jpg" alt="Imagem 142">
-                <img src="images/S143.jpg" alt="Imagem 143">
-                <img src="images/S144.jpg" alt="Imagem 144">
-                <img src="images/S145.jpg" alt="Imagem 145">
-                <img src="images/S146.jpg" alt="Imagem 146">
-                <img src="images/S147.jpg" alt="Imagem 147">
-                <img src="images/S148.jpg" alt="Imagem 148">
-                <img src="images/S149.jpg" alt="Imagem 149">
-                <img src="images/S150.jpg" alt="Imagem 150">
-                <img src="images/S151.jpg" alt="Imagem 151">
-                <img src="images/S152.jpg" alt="Imagem 152">
-                <img src="images/S153.jpg" alt="Imagem 153">
-                <img src="images/S154.jpg" alt="Imagem 154">
-                <img src="images/S155.jpg" alt="Imagem 155">
-                <img src="images/S156.jpg" alt="Imagem 156">
-                <img src="images/S157.jpg" alt="Imagem 157">
-                <img src="images/S158.jpg" alt="Imagem 158">
-                <img src="images/S159.jpg" alt="Imagem 159">
-                <img src="images/S160.jpg" alt="Imagem 160">
-                <img src="images/S161.jpg" alt="Imagem 161">
-                <img src="images/S162.jpg" alt="Imagem 162">
-                <img src="images/S163.jpg" alt="Imagem 163">
-                <img src="images/S164.jpg" alt="Imagem 164">
-                <img src="images/S165.jpg" alt="Imagem 165">
-                <img src="images/S166.jpg" alt="Imagem 166">
-                <img src="images/S167.jpg" alt="Imagem 167">
-                <img src="images/S168.jpg" alt="Imagem 168">
-                <img src="images/S169.jpg" alt="Imagem 169">
-                <img src="images/S170.jpg" alt="Imagem 170">
-                <img src="images/S171.jpg" alt="Imagem 171">
-                <img src="images/S172.jpg" alt="Imagem 172">
-                <img src="images/S173.jpg" alt="Imagem 173">
-                <img src="images/S174.jpg" alt="Imagem 174">
-                <img src="images/S175.jpg" alt="Imagem 175">
-                <img src="images/S176.jpg" alt="Imagem 176">
-                <img src="images/S177.jpg" alt="Imagem 177">
-                <img src="images/S178.jpg" alt="Imagem 178">
-                <img src="images/S179.jpg" alt="Imagem 179">
-                <img src="images/S180.jpg" alt="Imagem 180">
-                <img src="images/S181.jpg" alt="Imagem 181">
-                <img src="images/S182.jpg" alt="Imagem 182">
-                <img src="images/S183.jpg" alt="Imagem 183">
-                <img src="images/S184.jpg" alt="Imagem 184">
-                <img src="images/S185.jpg" alt="Imagem 185">
-                <img src="images/S186.jpg" alt="Imagem 186">
-                <img src="images/S187.jpg" alt="Imagem 187">
-                <img src="images/S188.jpg" alt="Imagem 188">
-                <img src="images/S189.jpg" alt="Imagem 189">
-                <img src="images/S190.jpg" alt="Imagem 190">
-                <img src="images/S191.jpg" alt="Imagem 191">
-                <img src="images/S192.jpg" alt="Imagem 192">
-                <img src="images/S193.jpg" alt="Imagem 193">
-                <img src="images/S194.jpg" alt="Imagem 194">
-                <img src="images/S195.jpg" alt="Imagem 195">
-                <img src="images/S196.jpg" alt="Imagem 196">
-                <img src="images/S197.jpg" alt="Imagem 197">
-                <img src="images/S198.jpg" alt="Imagem 198">
-                <img src="images/S199.jpg" alt="Imagem 199">
-                <img src="images/S200.jpg" alt="Imagem 200">
-                <img src="images/S201.jpg" alt="Imagem 201">
-                <img src="images/S202.jpg" alt="Imagem 202">
-                <img src="images/S203.jpg" alt="Imagem 203">
-                <img src="images/S204.jpg" alt="Imagem 204">
-                <img src="images/S205.jpg" alt="Imagem 205">
-                <img src="images/S206.jpg" alt="Imagem 206">
-                <img src="images/S207.jpg" alt="Imagem 207">
-                <img src="images/S208.jpg" alt="Imagem 208">
-                <img src="images/S209.jpg" alt="Imagem 209">
-                <img src="images/S210.jpg" alt="Imagem 210">
-                <img src="images/S211.jpg" alt="Imagem 211">
-                <img src="images/S212.jpg" alt="Imagem 212">
-                <img src="images/S213.jpg" alt="Imagem 213">
-                <img src="images/S214.jpg" alt="Imagem 214">
-                <img src="images/S215.jpg" alt="Imagem 215">
-                <img src="images/S216.jpg" alt="Imagem 216">
-                <img src="images/S217.jpg" alt="Imagem 217">
-                <img src="images/S218.jpg" alt="Imagem 218">
-                <img src="images/S219.jpg" alt="Imagem 219">
-                <img src="images/S220.jpg" alt="Imagem 220">
-                <img src="images/S221.jpg" alt="Imagem 221">
-                <img src="images/S222.jpg" alt="Imagem 222">
-                <img src="images/S223.jpg" alt="Imagem 223">
-                <img src="images/S224.jpg" alt="Imagem 224">
-                <img src="images/S225.jpg" alt="Imagem 225">
-                <img src="images/S226.jpg" alt="Imagem 226">
-                <img src="images/S227.jpg" alt="Imagem 227">
-                <img src="images/S228.jpg" alt="Imagem 228">
-                <img src="images/S229.jpg" alt="Imagem 229">
-                <img src="images/S230.jpg" alt="Imagem 230">
-                <img src="images/S231.jpg" alt="Imagem 231">
-                <img src="images/S232.jpg" alt="Imagem 232">
-                <img src="images/S233.jpg" alt="Imagem 233">
-                <img src="images/S234.jpg" alt="Imagem 234">
-                <img src="images/S235.jpg" alt="Imagem 235">
-                <img src="images/S236.jpg" alt="Imagem 236">
-                <img src="images/S237.jpg" alt="Imagem 237">
-                <img src="images/S238.jpg" alt="Imagem 238">
-                <img src="images/S239.jpg" alt="Imagem 239">
-                <img src="images/S240.jpg" alt="Imagem 240">
-                <img src="images/S241.jpg" alt="Imagem 241">
-                <img src="images/S242.jpg" alt="Imagem 242">
-                <img src="images/S243.jpg" alt="Imagem 243">
-                <img src="images/S244.jpg" alt="Imagem 244">
-                <img src="images/S245.jpg" alt="Imagem 245">
-                <img src="images/S246.jpg" alt="Imagem 246">
-                <img src="images/S247.jpg" alt="Imagem 247">
-                <img src="images/S248.jpg" alt="Imagem 248">
-                <img src="images/S249.jpg" alt="Imagem 249">
-                <img src="images/S250.jpg" alt="Imagem 250">
-                <img src="images/S251.jpg" alt="Imagem 251">
-                <img src="images/S252.jpg" alt="Imagem 252">
-                <img src="images/S253.jpg" alt="Imagem 253">
-                <img src="images/S254.jpg" alt="Imagem 254">
-                <img src="images/S255.jpg" alt="Imagem 255">
-                <img src="images/S256.jpg" alt="Imagem 256">
-                <img src="images/S257.jpg" alt="Imagem 257">
-                <img src="images/S258.jpg" alt="Imagem 258">
-                <img src="images/S259.jpg" alt="Imagem 259">
-                <img src="images/S260.jpg" alt="Imagem 260">
-                <img src="images/S261.jpg" alt="Imagem 261">
-                <img src="images/S262.jpg" alt="Imagem 262">
-                <img src="images/S263.jpg" alt="Imagem 263">
-                <img src="images/S264.jpg" alt="Imagem 264">
-                <img src="images/S265.jpg" alt="Imagem 265">
-                <img src="images/S266.jpg" alt="Imagem 266">
-                <img src="images/S267.jpg" alt="Imagem 267">
-                <img src="images/S268.jpg" alt="Imagem 268">
-                <img src="images/S269.jpg" alt="Imagem 269">
-                <img src="images/S270.jpg" alt="Imagem 270">
-                <img src="images/S271.jpg" alt="Imagem 271">
-                <img src="images/S272.jpg" alt="Imagem 272">
-                <img src="images/S273.jpg" alt="Imagem 273">
-                <img src="images/S274.jpg" alt="Imagem 274">
-                <img src="images/S275.jpg" alt="Imagem 275">
-                <img src="images/S276.jpg" alt="Imagem 276">
-                <img src="images/S277.jpg" alt="Imagem 277">
-                <img src="images/S278.jpg" alt="Imagem 278">
-                <img src="images/S279.jpg" alt="Imagem 279">
-                <img src="images/S280.jpg" alt="Imagem 280">
-                <img src="images/S281.jpg" alt="Imagem 281">
-                <img src="images/S282.jpg" alt="Imagem 282">
-                <img src="images/S283.jpg" alt="Imagem 283">
-                <img src="images/S284.jpg" alt="Imagem 284">
-                <img src="images/S285.jpg" alt="Imagem 285">
-                <img src="images/S286.jpg" alt="Imagem 286">
-                <img src="images/S287.jpg" alt="Imagem 287">
-                <img src="images/S288.jpg" alt="Imagem 288">
-                <img src="images/S289.jpg" alt="Imagem 289">
-                <img src="images/S290.jpg" alt="Imagem 290">
-                <img src="images/S291.jpg" alt="Imagem 291">
-                <img src="images/S292.jpg" alt="Imagem 292">
-                <img src="images/S293.jpg" alt="Imagem 293">
-                <img src="images/S294.jpg" alt="Imagem 294">
-                <img src="images/S295.jpg" alt="Imagem 295">
-                <img src="images/S296.jpg" alt="Imagem 296">
-                <img src="images/S297.jpg" alt="Imagem 297">
-                <img src="images/S298.jpg" alt="Imagem 298">
-                <img src="images/S299.jpg" alt="Imagem 299">
-                <img src="images/S300.jpg" alt="Imagem 300">
-                <img src="images/S301.jpg" alt="Imagem 301">
-                <img src="images/S302.jpg" alt="Imagem 302">
-                <img src="images/S303.jpg" alt="Imagem 303">
-                <img src="images/S304.jpg" alt="Imagem 304">
-                <img src="images/S305.jpg" alt="Imagem 305">
-                <img src="images/S306.jpg" alt="Imagem 306">
-                <img src="images/S307.jpg" alt="Imagem 307">
-                <img src="images/S308.jpg" alt="Imagem 308">
-                <img src="images/S309.jpg" alt="Imagem 309">
-                <img src="images/S310.jpg" alt="Imagem 310">
-                <img src="images/S311.jpg" alt="Imagem 311">
-                <img src="images/S312.jpg" alt="Imagem 312">
-                <img src="images/S313.jpg" alt="Imagem 313">
-                <img src="images/S314.jpg" alt="Imagem 314">
-                <img src="images/S315.jpg" alt="Imagem 315">
-                <img src="images/S316.jpg" alt="Imagem 316">
-                <img src="images/S317.jpg" alt="Imagem 317">
-                <img src="images/S318.jpg" alt="Imagem 318">
-                <img src="images/S319.jpg" alt="Imagem 319">
-                <img src="images/S320.jpg" alt="Imagem 320">
-                <img src="images/S321.jpg" alt="Imagem 321">
-                <img src="images/S322.jpg" alt="Imagem 322">
-                <img src="images/S323.jpg" alt="Imagem 323">
-                <img src="images/S324.jpg" alt="Imagem 324">
-                <img src="images/S325.jpg" alt="Imagem 325">
-                <img src="images/S326.jpg" alt="Imagem 326">
-                <img src="images/S327.jpg" alt="Imagem 327">
-                <img src="images/S328.jpg" alt="Imagem 328">
-                <img src="images/S329.jpg" alt="Imagem 329">
-                <img src="images/S330.jpg" alt="Imagem 330">
-                <img src="images/S331.jpg" alt="Imagem 331">
-                <img src="images/S332.jpg" alt="Imagem 332">
-                <img src="images/S333.jpg" alt="Imagem 333">
-                <img src="images/S334.jpg" alt="Imagem 334">
-                <img src="images/S335.jpg" alt="Imagem 335">
-                <img src="images/S336.jpg" alt="Imagem 336">
-                <img src="images/S337.jpg" alt="Imagem 337">
-                <img src="images/S338.jpg" alt="Imagem 338">
-                <img src="images/S339.jpg" alt="Imagem 339">
-                <img src="images/S340.jpg" alt="Imagem 340">
-                <img src="images/S341.jpg" alt="Imagem 341">
-                <img src="images/S342.jpg" alt="Imagem 342">
-                <img src="images/S343.jpg" alt="Imagem 343">
-                <img src="images/S344.jpg" alt="Imagem 344">
-                <img src="images/S345.jpg" alt="Imagem 345">
-                <img src="images/S346.jpg" alt="Imagem 346">
-                <img src="images/S347.jpg" alt="Imagem 347">
-                <img src="images/S348.jpg" alt="Imagem 348">
-                <img src="images/S349.jpg" alt="Imagem 349">
-                <img src="images/S350.jpg" alt="Imagem 350">
-                <img src="images/S351.jpg" alt="Imagem 351">
-                <img src="images/S352.jpg" alt="Imagem 352">
-                <img src="images/S353.jpg" alt="Imagem 353">
-                <img src="images/S354.jpg" alt="Imagem 354">
-                <img src="images/S355.jpg" alt="Imagem 355">
-                <img src="images/S356.jpg" alt="Imagem 356">
-                <img src="images/S357.jpg" alt="Imagem 357">
-                <img src="images/S358.jpg" alt="Imagem 358">
-                <img src="images/S359.jpg" alt="Imagem 359">
-                <img src="images/S360.jpg" alt="Imagem 360">
-                <img src="images/S361.jpg" alt="Imagem 361">
-                <img src="images/S362.jpg" alt="Imagem 362">
-                <img src="images/S363.jpg" alt="Imagem 363">
-                <img src="images/S364.jpg" alt="Imagem 364">
-                <img src="images/S365.jpg" alt="Imagem 365">
-                <img src="images/S366.jpg" alt="Imagem 366">
-                <img src="images/S367.jpg" alt="Imagem 367">
-                <img src="images/S368.jpg" alt="Imagem 368">
-                <img src="images/S369.jpg" alt="Imagem 369">
-                <img src="images/S370.jpg" alt="Imagem 370">
-                <img src="images/S371.jpg" alt="Imagem 371">
-                <img src="images/S372.jpg" alt="Imagem 372">
-                <img src="images/S373.jpg" alt="Imagem 373">
-                <img src="images/S374.jpg" alt="Imagem 374">
-                <img src="images/S375.jpg" alt="Imagem 375">
-                <img src="images/S376.jpg" alt="Imagem 376">
-                <img src="images/S377.jpg" alt="Imagem 377">
-                <img src="images/S378.jpg" alt="Imagem 378">
-                <img src="images/S379.jpg" alt="Imagem 379">
-                <img src="images/S380.jpg" alt="Imagem 380">
-                <img src="images/S381.jpg" alt="Imagem 381">
-                <img src="images/S382.jpg" alt="Imagem 382">
-                <img src="images/S383.jpg" alt="Imagem 383">
-                <img src="images/S384.jpg" alt="Imagem 384">
-                <img src="images/S385.jpg" alt="Imagem 385">
-                <img src="images/S386.jpg" alt="Imagem 386">
-                <img src="images/S387.jpg" alt="Imagem 387">
-                <img src="images/S388.jpg" alt="Imagem 388">
-                <img src="images/S389.jpg" alt="Imagem 389">
-                <img src="images/S390.jpg" alt="Imagem 390">
-                <img src="images/S391.jpg" alt="Imagem 391">
-                <img src="images/S392.jpg" alt="Imagem 392">
-                <img src="images/S393.jpg" alt="Imagem 393">
-                <img src="images/S394.jpg" alt="Imagem 394">
-                <img src="images/S395.jpg" alt="Imagem 395">
-                <img src="images/S396.jpg" alt="Imagem 396">
-                <img src="images/S397.jpg" alt="Imagem 397">
-                <img src="images/S398.jpg" alt="Imagem 398">
-                <img src="images/S399.jpg" alt="Imagem 399">
-                <img src="images/S400.jpg" alt="Imagem 400">
-                <img src="images/S401.jpg" alt="Imagem 401">
-                <img src="images/S402.jpg" alt="Imagem 402">
-                <img src="images/S403.jpg" alt="Imagem 403">
-                <img src="images/S404.jpg" alt="Imagem 404">
-                <img src="images/S405.jpg" alt="Imagem 405">
-                <img src="images/S406.jpg" alt="Imagem 406">
-                <img src="images/S407.jpg" alt="Imagem 407">
-                <img src="images/S408.jpg" alt="Imagem 408">
-                <img src="images/S409.jpg" alt="Imagem 409">
-                <img src="images/S410.jpg" alt="Imagem 410">
-                <img src="images/S411.jpg" alt="Imagem 411">
-                <img src="images/S412.jpg" alt="Imagem 412">
-                <img src="images/S413.jpg" alt="Imagem 413">
-                <img src="images/S414.jpg" alt="Imagem 414">
-                <img src="images/S415.jpg" alt="Imagem 415">
-                <img src="images/S416.jpg" alt="Imagem 416">
-                <img src="images/S417.jpg" alt="Imagem 417">
-                <img src="images/S418.jpg" alt="Imagem 418">
-                <img src="images/S419.jpg" alt="Imagem 419">
-                <img src="images/S420.jpg" alt="Imagem 420">
-                <img src="images/S421.jpg" alt="Imagem 421">
-                <img src="images/S422.jpg" alt="Imagem 422">
-                <img src="images/S423.jpg" alt="Imagem 423">
-                <img src="images/S424.jpg" alt="Imagem 424">
-                <img src="images/S425.jpg" alt="Imagem 425">
-                <img src="images/S426.jpg" alt="Imagem 426">
-                <img src="images/S427.jpg" alt="Imagem 427">
-                <img src="images/S428.jpg" alt="Imagem 428">
-                <img src="images/S429.jpg" alt="Imagem 429">
-                <img src="images/S430.jpg" alt="Imagem 430">
-                <img src="images/S431.jpg" alt="Imagem 431">
-                <img src="images/S432.jpg" alt="Imagem 432">
-                <img src="images/S433.jpg" alt="Imagem 433">
-                <img src="images/S434.jpg" alt="Imagem 434">
-                <img src="images/S435.jpg" alt="Imagem 435">
-                <img src="images/S436.jpg" alt="Imagem 436">
-                <img src="images/S437.jpg" alt="Imagem 437">
-                <img src="images/S438.jpg" alt="Imagem 438">
-                <img src="images/S439.jpg" alt="Imagem 439">
-                <img src="images/S440.jpg" alt="Imagem 440">
-                <img src="images/S441.jpg" alt="Imagem 441">
-                <img src="images/S442.jpg" alt="Imagem 442">
-                <img src="images/S443.jpg" alt="Imagem 443">
-                <img src="images/S444.jpg" alt="Imagem 444">
-                <img src="images/S445.jpg" alt="Imagem 445">
-                <img src="images/S446.jpg" alt="Imagem 446">
-                <img src="images/S447.jpg" alt="Imagem 447">
-                <img src="images/S448.jpg" alt="Imagem 448">
-                <img src="images/S449.jpg" alt="Imagem 449">
-                <img src="images/S450.jpg" alt="Imagem 450">
-                <img src="images/S451.jpg" alt="Imagem 451">
-                <img src="images/S452.jpg" alt="Imagem 452">
-                <img src="images/S453.jpg" alt="Imagem 453">
-                <img src="images/S454.jpg" alt="Imagem 454">
-                <img src="images/S455.jpg" alt="Imagem 455">
-                <img src="images/S456.jpg" alt="Imagem 456">
-                <img src="images/S457.jpg" alt="Imagem 457">
-                <img src="images/S458.jpg" alt="Imagem 458">
-                <img src="images/S459.jpg" alt="Imagem 459">
-                <img src="images/S460.jpg" alt="Imagem 460">
-                <img src="images/S461.jpg" alt="Imagem 461">
-                <img src="images/S462.jpg" alt="Imagem 462">
-                <img src="images/S463.jpg" alt="Imagem 463">
-                <img src="images/S464.jpg" alt="Imagem 464">
-                <img src="images/S465.jpg" alt="Imagem 465">
-                <img src="images/S466.jpg" alt="Imagem 466">
-                <img src="images/S467.jpg" alt="Imagem 467">
-                <img src="images/S468.jpg" alt="Imagem 468">
-                <img src="images/S469.jpg" alt="Imagem 469">
-                <img src="images/S470.jpg" alt="Imagem 470">
-                <img src="images/S471.jpg" alt="Imagem 471">
-                <img src="images/S472.jpg" alt="Imagem 472">
-                <img src="images/S473.jpg" alt="Imagem 473">
-                <img src="images/S474.jpg" alt="Imagem 474">
-                <img src="images/S475.jpg" alt="Imagem 475">
-                <img src="images/S476.jpg" alt="Imagem 476">
-                <img src="images/S477.jpg" alt="Imagem 477">
-                <img src="images/S478.jpg" alt="Imagem 478">
-                <img src="images/S479.jpg" alt="Imagem 479">
-                <img src="images/S480.jpg" alt="Imagem 480">
-                <img src="images/S481.jpg" alt="Imagem 481">
-                <img src="images/S482.jpg" alt="Imagem 482">
-                <img src="images/S483.jpg" alt="Imagem 483">
-                <img src="images/S484.jpg" alt="Imagem 484">
-                <img src="images/S485.jpg" alt="Imagem 485">
-                <img src="images/S486.jpg" alt="Imagem 486">
-                <img src="images/S487.jpg" alt="Imagem 487">
-                <img src="images/S488.jpg" alt="Imagem 488">
-                <img src="images/S489.jpg" alt="Imagem 489">
-                <img src="images/S490.jpg" alt="Imagem 490">
-                <img src="images/S491.jpg" alt="Imagem 491">
-                <img src="images/S492.jpg" alt="Imagem 492">
-                <img src="images/S493.jpg" alt="Imagem 493">
-                <img src="images/S494.jpg" alt="Imagem 494">
-                <img src="images/S495.jpg" alt="Imagem 495">
-                <img src="images/S496.jpg" alt="Imagem 496">
-                <img src="images/S497.jpg" alt="Imagem 497">
-                <img src="images/S498.jpg" alt="Imagem 498">
-                <img src="images/S499.jpg" alt="Imagem 499">
-                <img src="images/S500.jpg" alt="Imagem 500">
-            </div>
-        </section>
-    </main>
 
-    <!-- Rodapé -->
-    <footer>
-        <img src="images/roda.png" alt="Imagem de rodapé" class="footer-image">
-    </footer>
+        <footer>
+            <img src="roda2.png" alt="Rodapé">
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Definindo os itens para cada grupo
+                const itensSalgadoFrito = [
+                { nome: "Bolinho de Bacalhau", min: 20, preco: 1.00, descricaoResumo: "Bolinho de Bacalhau", descricao: "" },
+                { nome: "Bolinho de Calabresa", min: 20, preco: 0.90, descricaoResumo: "Bolinho de Calabresa", descricao: "" },
+                { nome: "Bolinho de Charque", min: 20, preco: 1.00, descricaoResumo: "Bolinho de Charque", descricao: "" },
+                { nome: "Coxinha de Frango", min: 20, preco: 0.90, descricaoResumo: "Coxinha de Frango", descricao: "" },
+                { nome: "Croquete Misto", min: 20, preco: 0.90, descricaoResumo: "Croquere Misto", descricao: "De Presunto Com Queijo" },
+                { nome: "Camarão Empanado", min: 25, preco: 1.40, descricaoResumo: "Camarão Empanado", descricao: "" },
+                { nome: "Mini Quibe", min: 25, preco: 1.10, descricaoResumo: "Mini Quibe de Carne C/ Queijo", descricao: "De Carne Com Queijo" },
+                { nome: "Pastel de Festa", min: 20, preco: 1.20, descricaoResumo: "Pastel de Festa", descricao: "" },
+            ];
+
+            const itensSalgadoForno = [
+                { nome: "Canudinho de Frango", min: 20, preco: 1.50, descricaoResumo: "Canudinho de Frango", descricao: "Massa Caseira Assada no Forno" },
+                { nome: "Empadinha de Bacalhau", min: 20, preco: 1.00, descricaoResumo: "Empadinha de Bacalhau", descricao: "" },
+                { nome: "Empadinha de Camarão", min: 20, preco: 1.00, descricaoResumo: "Empadinha de Camarão", descricao: "" },
+                { nome: "Empadinha de Carne", min: 20, preco: 0.90, descricaoResumo: "Empadinha de Carne", descricao: "" },
+                { nome: "Empadinha de Frango", min: 20, preco: 0.90, descricaoResumo: "Empadinha de Frango", descricao: "" },
+                { nome: "Mini Folhado de Carne", min: 20, preco: 2.10, descricaoResumo: "Mini Folhado de Carne", descricao: "" },
+                { nome: "Mini Folhado de Frango", min: 20, preco: 2.10, descricaoResumo: "Mini Folhado de Frango", descricao: "" },
+                { nome: "Mini Folhado de Queijo", min: 20, preco: 2.10, descricaoResumo: "Mini Folhado de Queijo", descricao: "" },
+                { nome: "Mini Folhado de Pizza", min: 20, preco: 2.10, descricaoResumo: "Mini Folhado de Pizza", descricao: "" },
+                { nome: "Mini Enroladinho", min: 20, preco: 1.00, descricaoResumo: "Mini Enroladinho de salsicha", descricao: "Com Salsicha" },
+                { nome: "Pastel de Forno de Bacalhau", min: 20, preco: 1.20, descricaoResumo: "Pastel de Forno de Bacalhau", descricao: "" },
+                { nome: "Pastel de Forno de Camarão", min: 20, preco: 1.20, descricaoResumo: "Pastel de Forno de Camarão", descricao: "" },
+                { nome: "Pastel de Forno de Carne", min: 20, preco: 0.90, descricaoResumo: "Pastel de Forno de Carne", descricao: "" },
+                { nome: "Pastel de Forno de Frango", min: 20, preco: 0.90, descricaoResumo: "Pastel de Forno de Frango", descricao: "" },
+                { nome: "Pastel de Forno de Queijo", min: 20, preco: 0.90, descricaoResumo: "Pastel de Forno de Queijo", descricao: "" },
+                { nome: "Pastel de Forno de Pizza", min: 20, preco: 0.90, descricaoResumo: "Pastel de Forno de Pizza", descricao: "" },
+            ];
+    
+            const itensSalgadoVegetariano = [
+                { nome: "Canudinho de Soja", min: 20, preco: 1.50, descricaoResumo: "Canudinho de Soja", descricao: "Massa Caseira Assada no Forno" },
+                { nome: "Coxinha de Soja", min: 20, preco: 0.90, descricaoResumo: "Coxinha de SOJA", descricao: "" },
+                { nome: "Coxinha de Caju *", min: 20, preco: 1.10, descricaoResumo: "Coxinha de CAJU", descricao: "* CONSULTAR DISPONIBILIDADE *" },
+                { nome: "Empadinha de Creme de Aborbinha", min: 20, preco: 0.90, descricaoResumo: "Empadinha de Aborbinha Com Queijo", descricao: "Com Queijo" },
+                { nome: "Empadinha de Falso Camarão", min: 20, preco: 0.90, descricaoResumo: "Empadinha de Falso Camarão", descricao: "A Base de Milho e Leite de Coco" },
+                { nome: "Pastel de Festa Vegetariano", min: 20, preco: 1.20, descricaoResumo: "Pastel de Festa de SOJA", descricao: "De Soja" },
+                { nome: "Pastel de Forno Creme de Abobrinha", min: 20, preco: 0.90, descricaoResumo: "Pastel de Forno Abobrinha C/ Queijo", descricao: "Com Queijo" },
+                { nome: "Pastel de Forno Caju *", min: 20, preco: 1.20, descricaoResumo: "Pastel de Forno Caju", descricao: "* CONSULTAR DISPONIBILIDADE *" },
+            ];
+    
+            const itensBoloTradicional = [
+                { nome: "Bolo de Bem-Casado", tamanho: "P (1.5 KG)", preco: 85.00, descricaoResumo: "Bolo de Bem-Casado - P (1.5 KG)", descricao: "" },
+                { nome: "Bolo de Bem-Casado", tamanho: "M (2.5 KG)", preco: 140.00, descricaoResumo: "Bolo de Bem-Casado - M (2.5 KG)", descricao: "" },
+                { nome: "Bolo de Bem-Casado", tamanho: "G (3.5 KG)", preco: 195.00, descricaoResumo: "Bolo de Bem-Casado - G (3.5 KG)", descricao: "" },
+                { nome: "Bolo de Doce de Leite", tamanho: "P (1.5 KG)", preco: 85.00, descricaoResumo: "Bolo de Doce de Leite e Crocante de Amendoin - P (1.5 KG)", descricao: "Com Crocante de Amendoin" },
+                { nome: "Bolo de Doce de Leite", tamanho: "M (2.5 KG)", preco: 140.00, descricaoResumo: "Bolo de Doce de Leite e Crocante de Amendoin - M (2.5 KG)", descricao: "Com Crocante de Amendoin" },
+                { nome: "Bolo de Doce de Leite", tamanho: "G (3.5 KG)", preco: 195.00, descricaoResumo: "Bolo de Doce de Leite e Crocante de Amendoin - G (3.5 KG)", descricao: "Com Crocante de Amendoin" },
+                { nome: "Bolo de Chocolate", tamanho: "P (1.5 KG)", preco: 85.00, descricaoResumo: "Bolo de Chocolate 50% Cacau - P (1.5 KG)", descricao: "Com chocolate 50% cacau" },
+                { nome: "Bolo de Chocolate", tamanho: "M (2.5 KG)", preco: 140.00, descricaoResumo: "Bolo de Chocolate 50% Cacau - M (2.5 KG)", descricao: "Com chocolate 50% cacau" },
+                { nome: "Bolo de Chocolate", tamanho: "G (3.5 KG)", preco: 195.00, descricaoResumo: "Bolo de Chocolate 50% Cacau - G (3.5 KG)", descricao: "Com chocolate 50% cacau" },
+                { nome: "Bolo de Limão", tamanho: "P (1.5 KG)", preco: 85.00, descricaoResumo: "Bolo de Limão e Chocolate Branco - P (1.5 KG)", descricao: "Com Cholocate Branco" },
+                { nome: "Bolo de Limão", tamanho: "M (2.5 KG)", preco: 140.00, descricaoResumo: "Bolo de Limão e Chocolate Branco - M (2.5 KG)", descricao: "Com Cholocate Branco" },
+                { nome: "Bolo de Limão", tamanho: "G (3.5 KG)", preco: 195.00, descricaoResumo: "Bolo de Limão e Chocolate Branco - G (3.5 KG)", descricao: "Com Cholocate Branco" },
+                { nome: "Bolo de Maracujá", tamanho: "P (1.5 KG)", preco: 85.00, descricaoResumo: "Bolo de Maracujá e Chocolate Branco - P (1.5 KG)", descricao: "Com Cholocate Branco" },
+                { nome: "Bolo de Maracujá", tamanho: "M (2.5 KG)", preco: 140.00, descricaoResumo: "Bolo de Maracujá e Chocolate Branco - M (2.5 KG)", descricao: "Com Cholocate Branco" },
+                { nome: "Bolo de Maracujá", tamanho: "G (3.5 KG)", preco: 195.00, descricaoResumo: "Bolo de Maracujá e Chocolate Branco - G (3.5 KG)", descricao: "Com Cholocate Branco" },
+            ];
+    
+            const itensBoloEspecial = [
+                { nome: "Bolo de Ameixa", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo de Ameixa e Chocolate Branco - P (1.5 KG)", descricao: "Com Chocolate Branco" },
+                { nome: "Bolo de Ameixa", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo de Ameixa e Chocolate Branco - M (2.5 KG)", descricao: "Com Chocolate Branco" },
+                { nome: "Bolo de Ameixa", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo de Ameixa e Chocolate Branco - G (3.5 KG)", descricao: "Com Chocolate Branco" },
+                { nome: "Bolo de Café e Doce de Leite", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo de Café Com Doce de Leite e Chocolate Amargo - P (1.5 KG)", descricao:"Com Chocolate Amargo" },
+                { nome: "Bolo de Café e Doce de Leite", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo de Café Com Doce de Leite e Chocolate Amargo - M (2.5 KG)", descricao:"Com Chocolate Amargo" },
+                { nome: "Bolo de Café e Doce de Leite", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo de Café Com Doce de Leite e Chocolate Amargo - G (3.5 KG)", descricao:"Com Chocolate Amargo" },
+                { nome: "Bolo de Chocolate 50%", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo de Chocolate 50% com Morangos - P (1.5 KG)", descricao:"Com Morangos" },
+                { nome: "Bolo de Chocolate 50%", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo de Chocolate 50% com Morangos - M (2.5 KG)", descricao:"Com Morangos" },
+                { nome: "Bolo de Chocolate 50%", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo de Chocolate 50% com Morangos - G (3.5 KG)", descricao:"Com Morangos" },
+                { nome: "Bolo de Delicia de Abacaxi", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo de Delicia de Abacaxi - P (1.5 KG)", descricao: "" },
+                { nome: "Bolo de Delicia de Abacaxi", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo de Delicia de Abacaxi - M (2.5 KG)", descricao: "" },
+                { nome: "Bolo de Delicia de Abacaxi", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo de Delicia de Abacaxi - G (3.5 KG)", descricao: "" },
+                { nome: "Bolo de Morango", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo de Morango com Brigadeiro Branco e Chantinhinho - P (1.5 KG)", descricao: "Com Recheio de Brigadeiro Branco e Cobertura de Chantininho" },
+                { nome: "Bolo de Morango", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo de Morango com Brigadeiro Branco e Chantinhinho - M (2.5 KG)", descricao: "Com Recheio de Brigadeiro Branco e Cobertura de Chantininho" },
+                { nome: "Bolo de Morango", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo de Morango com Brigadeiro Branco e Chantinhinho - G (3.5 KG)", descricao: "Com Recheio de Brigadeiro Branco e Cobertura de Chantininho" },
+                { nome: "Bolo Prestígio", tamanho: "P (1.5 KG)", preco: 105.00, descricaoResumo: "Bolo Prestígio - P (1.5 KG)", descricao: "" },
+                { nome: "Bolo Prestígio", tamanho: "M (2.5 KG)", preco: 175.00, descricaoResumo: "Bolo Prestígio - M (2.5 KG)", descricao: "" },
+                { nome: "Bolo Prestígio", tamanho: "G (3.5 KG)", preco: 245.00, descricaoResumo: "Bolo Prestígio - G (3.5 KG)", descricao: "" },
+            ];
+    
+            const itensPratoSalgado = [
+                { nome: "Empadão de Bacalhau", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Empadão de Bacalhau - P (1 KG)", descricao: "" },
+                { nome: "Empadão de Bacalhau", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Empadão de Bacalhau - M (2 KG)", descricao: "" },
+                { nome: "Empadão de Bacalhau", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Empadão de Bacalhau - G (3 KG)", descricao: "" },
+                { nome: "Empadão de Carne", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Empadão de Carne - P (1 KG)", descricao: "" },
+                { nome: "Empadão de Carne", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Empadão de Carne - M (2 KG)", descricao: "" },
+                { nome: "Empadão de Carne", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Empadão de Carne - G (3 KG)", descricao: "" },
+                { nome: "Empadão de Camarão", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Empadão de Camarão - P (1 KG)", descricao: "" },
+                { nome: "Empadão de Camarão", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Empadão de Camarão - M (2 KG)", descricao: "" },
+                { nome: "Empadão de Camarão", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Empadão de Camarão - G (3 KG)", descricao: "" },
+                { nome: "Empadão de Frango", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Empadão de Frango - P (1 KG)", descricao: "" },
+                { nome: "Empadão de Frango", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Empadão de Frango - M (2 KG)", descricao: "" },
+                { nome: "Empadão de Frango", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Empadão de Frango - G (3 KG)", descricao: "" },
+                { nome: "Fricassê de Frango", tamanho: "P (1 KG)", preco: 75.00, descricaoResumo: "Fricassê de Frango - P (1 KG)", descricao: "" },
+                { nome: "Fricassê de Frango", tamanho: "M (2 KG)", preco: 150.00, descricaoResumo: "Fricassê de Frango - M (2 KG)", descricao: "" },
+                { nome: "Fricassê de Frango", tamanho: "G (3 KG)", preco: 225.00, descricaoResumo: "Fricassê de Frango - G (3 KG)", descricao: "" },
+                { nome: "Quiche de Camarão", tamanho: "P (1 KG)", preco: 110.00, descricaoResumo: "Quiche de Camarão - P (1 KG)", descricao: "" },
+                { nome: "Quiche de Camarão", tamanho: "M (2 KG)", preco: 220.00, descricaoResumo: "Quiche de Camarão - M (2 KG)", descricao: "" },
+                { nome: "Quiche de Camarão", tamanho: "G (3 KG)", preco: 330.00, descricaoResumo: "Quiche de Camarão - G (3 KG)", descricao: "" },
+                { nome: "Quiche de Frango", tamanho: "P (1 KG)", preco: 80.00, descricaoResumo: "Quiche de Frango - P (1 KG)", descricao: "Com Alho Poró" },
+                { nome: "Quiche de Frango", tamanho: "M (2 KG)", preco: 160.00, descricaoResumo: "Quiche de Frango - M (2 KG)", descricao: "Com Alho Poró" },
+                { nome: "Quiche de Frango", tamanho: "G (3 KG)", preco: 240.00, descricaoResumo: "Quiche de Frango - G (3 KG)", descricao: "Com Alho Poró" },
+                { nome: "Rocambole de Bacalhau", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Rocambole de Bacalhau - P (1 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de dBacalhau", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Rocambole de Bacalhau - M (2 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Bacalhau", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Rocambole de Bacalhau - G (3 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Camarão", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Rocambole de Camarão - P (1 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Camarão", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Rocambole de Camarão - M (2 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Camarão", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Rocambole de Camarão - G (3 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Carne", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Rocambole de Carne - P (1 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Carne", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Rocambole de Carne - M (2 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Carne", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Rocambole de Carne - G (3 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Frango", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Rocambole de Frango - P (1 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Frango", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Rocambole de Frango - M (2 KG)", descricao: "Massa de Batata" },
+                { nome: "Rocambole de Frango", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Rocambole de Frango - G (3 KG)", descricao: "Massa de Batata" },
+                { nome: "Torta Salgada de Bacalhau", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Torta Salgada de Bacalhau - P (1 KG)", descricao: "" },
+                { nome: "Torta Salgada de Bacalhau", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Torta Salgada de Bacalhau - M (2 KG)", descricao: "" },
+                { nome: "Torta Salgada de Bacalhau", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Torta Salgada de Bacalhau - G (3 KG)", descricao: "" },
+                { nome: "Torta Salgada de Carne", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Torta Salgada de Carne - P (1 KG)", descricao: "" },
+                { nome: "Torta Salgada de Carne", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Torta Salgada de Carne - M (2 KG)", descricao: "" },
+                { nome: "Torta Salgada de Carne", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Torta Salgada de Carne - G (3 KG)", descricao: "" },
+                { nome: "Torta Salgada de Camarão", tamanho: "P (1 KG)", preco: 95.00, descricaoResumo: "Torta Salgada de Camarão - P (1 KG)", descricao: "" },
+                { nome: "Torta Salgada de Camarão", tamanho: "M (2 KG)", preco: 190.00, descricaoResumo: "Torta Salgada de Camarão - M (2 KG)", descricao: "" },
+                { nome: "Torta Salgada de Camarão", tamanho: "G (3 KG)", preco: 285.00, descricaoResumo: "Torta Salgada de Camarão - G (3 KG)", descricao: "" },
+                { nome: "Torta Salgada de Frango", tamanho: "P (1 KG)", preco: 65.00, descricaoResumo: "Torta Salgada de Frango - P (1 KG)", descricao: "" },
+                { nome: "Torta Salgada de Frango", tamanho: "M (2 KG)", preco: 130.00, descricaoResumo: "Torta Salgada de Frango - M (2 KG)", descricao: "" },
+                { nome: "Torta Salgada de Frango", tamanho: "G (3 KG)", preco: 195.00, descricaoResumo: "Torta Salgada de Frango - G (3 KG)", descricao: "" },
+            ];
+    
+            // Função para criar as tabelas dinamicamente
+            function criarTabelaGrupo(grupo, idTabela, nomeGrupo) {
+                const tabela = document.getElementById(idTabela);
+                if (!tabela) return;
+    
+                grupo.forEach(item => {
+                    const tr = document.createElement("tr");
+                    const qtdOutamanho = item.tamanho || item.min;
+    
+                    tr.innerHTML = `
+                        <td>
+                            <div class="item-nome">${item.nome}</div>
+                            <div class="descricao">${item.descricao}</div>
+                        </td>
+                        <td>${qtdOutamanho}</td>
+                        <td>R$ ${item.preco.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>
+                            <div class="quantidade-container">
+                                <input type="number" min="0" value="0" data-min="${item.min || 1}" data-preco="${item.preco}" data-resumo="${item.descricaoResumo}" data-grupo="${nomeGrupo}" class="quantidade-input">
+                                <div class="erro" style="color: red; display: none; font-size: 0.9em; margin-top: 5px;">
+                                    Valor mínimo do item é de ${item.min} unidades.
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tabela.appendChild(tr);
+                });
+            }
+    
+            // Chamando a função para cada grupo de itens
+            const gruposItens = {
+                "tabela-salfri": { itens: itensSalgadoFrito, nomeGrupo: "Salgados Fritos" },
+                "tabela-salgado-forno": { itens: itensSalgadoForno, nomeGrupo: "Salgados Assados" },
+                "tabela-salgado-vegetariano": { itens: itensSalgadoVegetariano, nomeGrupo: "Salgados Vegetarianos" },
+                "tabela-bolo-tradicional": { itens: itensBoloTradicional, nomeGrupo: "Bolos Tradicionais" },
+                "tabela-bolo-especial": { itens: itensBoloEspecial, nomeGrupo: "Bolos Especiais" },
+                "tabela-prato-salgado": { itens: itensPratoSalgado, nomeGrupo: "Pratos Salgados" },
+            };
+    
+            for (const idTabela in gruposItens) {
+                criarTabelaGrupo(gruposItens[idTabela].itens, idTabela, gruposItens[idTabela].nomeGrupo);
+            }
+    
+            // Função para atualizar o total dos pedidos e gerar o resumo do site
+            function atualizarTotal() {
+                let total = 0;
+                const resumoItens = document.getElementById("resumo-itens");
+                if (!resumoItens) return;
+                resumoItens.innerHTML = '';
+    
+                const gruposResumo = {}; // Objeto para agrupar os itens pelos grupos
+    
+                document.querySelectorAll(".quantidade-input").forEach(input => {
+                    const quantidade = parseInt(input.value) || 0;
+                    const min = parseInt(input.getAttribute("data-min")) || 1;
+                    const preco = parseFloat(input.getAttribute("data-preco")) || 0;
+                    const descricaoResumo = input.getAttribute("data-resumo");
+                    const grupo = input.getAttribute("data-grupo");
+                    const erroElemento = input.closest('.quantidade-container').querySelector('.erro');
+    
+                    if (quantidade > 0 && quantidade < min) {
+                        erroElemento.style.display = 'block';
+                    } else {
+                        erroElemento.style.display = 'none';
+                    }
+    
+                    if (quantidade >= min) {
+                        const totalItem = quantidade * preco;
+                        total += totalItem;
+    
+                        // Agrupando itens pelo grupo
+                        if (!gruposResumo[grupo]) {
+                            gruposResumo[grupo] = [];
+                        }
+                        gruposResumo[grupo].push({ descricao: descricaoResumo, quantidade, totalItem });
+                    }
+                });
+    
+                // Exibindo o resumo agrupado
+                for (const grupo in gruposResumo) {
+                    resumoItens.innerHTML += `<strong>${grupo}:</strong><br>`;
+                    gruposResumo[grupo].forEach(item => {
+                        resumoItens.innerHTML += `${item.descricao} - ${item.quantidade} unidades - R$ ${item.totalItem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<br>`;
+                    });
+                    resumoItens.innerHTML += `<br>`; // Separando grupos
+                }
+    
+                document.getElementById("resumo-total").textContent = `Total: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById("resumo").style.display = total > 0 ? 'block' : 'none';
+            }
+    
+            // Atualizar total sempre que a quantidade for alterada
+            document.querySelectorAll(".quantidade-input").forEach(input => {
+                input.addEventListener("input", atualizarTotal);
+            });
+    
+            // Função para enviar o pedido para o WhatsApp
+            function confirmarPedido() {
+                let resumoWhatsapp = "Olá, Favu!\nGostaria de saber a disponibilidade para encomendar os itens abaixo:\n\n\n*_- Resumo do pedido_:*\n\n";
+                let totalPedido = 0;
+    
+                const gruposResumo = {}; // Objeto para agrupar os itens pelos grupos
+    
+                document.querySelectorAll(".quantidade-input").forEach(input => {
+                    const quantidade = parseInt(input.value) || 0;
+                    const min = parseInt(input.getAttribute("data-min")) || 1;
+                    const preco = parseFloat(input.getAttribute("data-preco")) || 0;
+                    const descricaoResumo = input.getAttribute("data-resumo");
+                    const grupo = input.getAttribute("data-grupo");
+    
+                    if (quantidade >= min) {
+                        const totalItem = quantidade * preco;
+                        totalPedido += totalItem;
+    
+                        // Agrupando itens pelo grupo
+                        if (!gruposResumo[grupo]) {
+                            gruposResumo[grupo] = [];
+                        }
+                        gruposResumo[grupo].push({ descricao: descricaoResumo, quantidade });
+                    }
+                });
+    
+                // Exibindo o resumo para o WhatsApp
+                for (const grupo in gruposResumo) {
+                    resumoWhatsapp += `*${grupo}:*\n`;
+                    gruposResumo[grupo].forEach(item => {
+                        resumoWhatsapp += `${item.descricao} - ${item.quantidade} unidades\n`;
+                    });
+                    resumoWhatsapp += `\n`; // Separando grupos
+                }
+    
+                resumoWhatsapp += `*_Total_*: R$ ${totalPedido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    
+                // Coleta os dados do formulário
+                const nome = document.getElementById("nome").value;
+                const data = document.getElementById("data").value;
+                const horario = document.getElementById("horario").value;
+                const pagamento = document.getElementById("pagamento").value;
+    
+                // Valida se todos os campos foram preenchidos
+                if (!nome || !data || !horario || !pagamento) {
+                    alert("Por gentileza, preencha todos os campos!");
+                    return;
+                }
+    
+                // Ajustando a data para o formato dia/mês/ano
+                const dataParts = data.split("-");
+                const dataFormatada = `${dataParts[2]}/${dataParts[1]}/${dataParts[0]}`;
+    
+                // Adiciona os dados do pedido no final da mensagem
+                resumoWhatsapp += `\n\n\n\n_*- Informações do Pedido:*_\n\n*Nome*: ${nome}\n*Data da entrega*: ${dataFormatada}\n*Horário da entrega*: ${horario}\n*Forma de pagamento*: ${pagamento}`;
+    
+                // Envia a mensagem via WhatsApp
+                const whatsappLink = `https://wa.me/558199591775?text=${encodeURIComponent(resumoWhatsapp)}`;
+                window.open(whatsappLink, '_blank');
+    
+                // Resetando os campos após a confirmação
+                resetarCampos();
+            }
+    
+            // Função para resetar os campos após a confirmação do pedido
+            function resetarCampos() {
+                // Limpa os campos de quantidade
+                document.querySelectorAll(".quantidade-input").forEach(input => {
+                    input.value = 0;
+                });
+    
+                // Limpa o resumo do pedido
+                const resumoItens = document.getElementById("resumo-itens");
+                const resumoTotal = document.getElementById("resumo-total");
+                if (resumoItens) resumoItens.innerHTML = '';
+                if (resumoTotal) resumoTotal.textContent = '';
+    
+                // Fecha o popup
+                fecharPopup();
+    
+                // Opcional: se você quiser voltar ao início da página
+                window.scrollTo(0, 0);
+            }
+    
+            // Adiciona evento para fazer o pedido
+            const confirmarPedidoButton = document.querySelector('button[onclick="confirmarPedido()"]');
+            if (confirmarPedidoButton) {
+                confirmarPedidoButton.addEventListener("click", confirmarPedido);
+            }
+    
+            // Função para voltar e recarregar a página
+            const voltarButton = document.getElementById("voltar");
+            if (voltarButton) {
+                voltarButton.addEventListener("click", () => window.location.reload());
+            }
+        });
+    
+        // Abre o popup
+        function abrirPopup() {
+            document.getElementById("popup-pedido").style.display = "flex";
+        }
+    
+        // Fecha o popup
+        function fecharPopup() {
+            document.getElementById("popup-pedido").style.display = "none";
+        }
+    </script>
+    
 </body>
 </html>
